@@ -3,16 +3,24 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from flask_cors import CORS
 import openai
+import os
+from dotenv import load_dotenv
 
-# אתחול Firebase
-cred = credentials.Certificate("firebase-keyNew.json")  # קובץ המפתח של Firebase
+# Load environment variables
+load_dotenv()
+
+# Initialize Firebase
+firebase_key_path = os.getenv("FIREBASE_KEY_PATH")
+cred = credentials.Certificate(firebase_key_path)
 firebase_admin.initialize_app(cred)
+
 
 # חיבור למסד נתונים Firestore
 db = firestore.client()
 
 # אתחול OpenAI
-openai.api_key = 'REDACTED'  # החלף עם המפתח API שלך
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 # יצירת אפליקציה
 app = Flask(__name__)
 CORS(app)
